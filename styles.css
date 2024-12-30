@@ -1,0 +1,263 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f9ff;
+    color: #333;
+}
+
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+footer {
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: #666;
+}
+
+/* Estilos generales de ventanas */
+.window {
+    max-width: 1000px;
+    margin: 50px auto;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+/* Ajustamos el margin-top del h2 */
+h2 {
+    text-align: center;
+    color: #007bff;
+    margin: 0; /* Eliminamos el margen */
+    padding: 0; /* Eliminamos el padding */
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    margin-bottom: 10px; /* Reducido el margen inferior */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    display: inline-block;
+    font-size: 1em;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+    width: auto; 
+    max-width: 200px; 
+    margin-left: auto; 
+    margin-right: auto; 
+    margin-top: 20px; 
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Ajuste de la estructura del formulario */
+.form-group {
+    margin-bottom: 10px; /* Reducido el margen entre los campos */
+    width: 100%;  /* Asegura que los contenedores de los campos ocupen todo el espacio disponible */
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    align-items: flex-start; 
+    justify-content: flex-start; 
+    height: auto; 
+    padding-top: 0;
+}
+
+/* Estilos para la tabla */
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1em;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table thead tr {
+    background-color: #007bff;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #007bff;
+}
+
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    padding: 12px 20px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Contenedor para el botón Añadir tarea */
+#addTaskBtn {
+    display: flex;
+    justify-content: center; /* Centra el botón horizontalmente */
+    align-items: center;     /* Asegura que se alinee verticalmente si es necesario */
+    width: 100%;
+    margin-top: 20px;        /* Añade un pequeño espacio arriba del botón */
+}
+
+/* Estilo para el botón Añadir tarea */
+#addTaskBtn {
+    padding: 12px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+#addTaskBtn {
+    background-color: #0056b3;
+}
+
+.btn-edit {
+    background-color: #ffc107;  /* Amarillo */
+}
+
+.btn-edit:hover {
+    background-color: #e0a800;  /* Amarillo oscuro */
+}
+
+/* Botón de eliminar (rojo) */
+.btn-delete {
+    background-color: #dc3545;  /* Rojo */
+}
+
+.btn-delete:hover {
+    background-color: #c82333;  /* Rojo oscuro */
+}
+
+.logout-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+.register-link a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}

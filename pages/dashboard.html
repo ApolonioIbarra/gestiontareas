@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Tablero Principal</h1>
+        <button class="btn-secondary logout-button" onclick="logout();">Cerrar Sesión</button>
+    </header>
+
+    <main>
+        <section id="dashboard" class="window">
+            <h2>Bienvenido al Tablero Principal</h2>
+            <button id="addTaskBtn" class="btn-secondary" onclick="window.location.href='formulario_tarea.html';">Añadir Tarea</button>
+            <div id="tasks" class="table-container">
+                <h3>Tareas</h3>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Asignatura</th>
+                            <th>Descripción</th>
+                            <th>Fecha de Entrega</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskList">
+                        <!-- Las tareas serán cargadas dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Jesus Apolonio Ibarra Jimenez</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function loadTasks() {
+            $.ajax({
+                url: '../php/get_tasks.php',
+                type: 'GET',
+                success: function (response) {
+                    try {
+                        const res = JSON.parse(response);
+                        if (res.status === 'success') {
+                            const tasks = res.data;
+                            $('#taskList').empty(); // Limpiar la tabla antes de agregar nuevas tareas
+                            tasks.forEach(task => {
+                                $('#taskList').append(`
+                                    <tr>
+                                        <td>${task.titulo}</td>
+                                        <td>${task.asignatura}</td>
+                                        <td>${task.descripcion}</td>
+                                        <td>${task.fecha_entrega}</td>
+                                        <td>${task.estado}</td>
+                                        <td>
+                                            <button class="edit-btn" onclick="editTask(${task.id})">Editar</button>
+                                            <button class="delete-btn" onclick="deleteTask(${task.id})">Eliminar</button>
+                                        </td>
+                                    </tr>
+                                `);
+                            });
+                        } else {
+                            alert('Error al cargar las tareas: ' + res.message);
+                        }
+                    } catch (error) {
+                        console.error('Error al procesar la respuesta:', error);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error AJAX:', error);
+                    alert('Ocurrió un error al cargar las tareas.');
+                }
+            });
+        } 
+
+        $(document).ready(function () {
+            loadTasks();
+        });
+
+        function editTask(taskId) {
+            window.location.href = `formulario_tarea.html?id=${taskId}`;
+        }
+
+        function deleteTask(taskId) {
+            if (confirm('¿Estás seguro de que deseas eliminar esta tarea?')) {
+                $.ajax({
+                    url: '../php/delete_task.php',
+                    method: 'POST',
+                    data: { id: taskId },
+                    success: function(response) {
+                        const res = JSON.parse(response);
+                        if (res.status === 'success') {
+                            alert('Tarea eliminada exitosamente.');
+                            loadTasks();
+                        } else {
+                            alert('Error al eliminar la tarea: ' + res.message);
+                        }
+                    },
+                    error: function() {
+                        alert('Error al intentar eliminar la tarea.');
+                    }
+                });
+            }
+        }
+
+        function logout() {
+            $.ajax({
+                url: '../php/logout.php',
+                type: 'POST',
+                success: function () {
+                    window.location.href = '../index.html';
+                },
+                error: function () {
+                    alert('Error al cerrar la sesión.');
+                }
+            });
+        }
+    </script>
+
+	<script type="text/javascript">
+        // Función para evitar que el usuario use el botón de retroceso
+        function preback() {
+            window.history.forward();
+        }
+        setTimeout("preback()", 0);
+        window.onunload = function() { null; }
+    </script>
+</body>
+</html>

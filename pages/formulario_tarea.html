@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Tarea</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1 id="formTitle">Añadir Tarea</h1>
+    </header>
+
+    <main>
+        <section id="taskFormSection" class="window">
+            <form id="taskForm">
+                <!-- ID de la tarea (oculto para edición) -->
+                <input type="hidden" id="taskId" name="id">
+
+                <div class="form-group">
+                    <label for="titulo">Título:</label>
+                    <input type="text" id="titulo" name="titulo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="asignatura">Asignatura:</label>
+                    <input type="text" id="asignatura" name="asignatura" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaEntrega">Fecha de Entrega:</label>
+                    <input type="date" id="fechaEntrega" name="fecha_entrega" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="estado">Estado:</label>
+                    <select id="estado" name="estado" required>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="completada">Completada</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary">Guardar Tarea</button>
+                <button type="button" class="btn-secondary" onclick="window.location.href='dashboard.html';">Cancelar</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Jesus Apolonio Ibarra Jimenez</p>
+    </footer>
+
+    <script>
+        $(document).ready(function () {
+            // Obtener el ID de la tarea desde la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const taskId = urlParams.get('id');
+
+            if (taskId) {
+                // Cambiar el título del formulario a "Editar Tarea"
+                $('#formTitle').text('Editar Tarea');
+                $('#taskId').val(taskId); // Establecer el ID en el campo oculto
+
+                // Cargar los datos de la tarea
+                $.ajax({
+                    url: '../php/get_tasks.php',
+                    type: 'GET',
+                    data: { id: taskId },
+                    success: function (response) {
+                        try {
+                            const res = JSON.parse(response);
+                            if (res.status === 'success') {
+                                const task = res.data;
+                                // Rellenar los campos con los datos de la tarea
+                                $('#titulo').val(task.titulo);
+                                $('#asignatura').val(task.asignatura);
+                                $('#descripcion').val(task.descripcion);
+                                $('#fechaEntrega').val(task.fecha_entrega);
+                                $('#estado').val(task.estado);
+                            } else {
+                                alert('Error al cargar la tarea: ' + res.message);
+                            }
+                        } catch (error) {
+                            console.error('Error al procesar la respuesta:', error);
+                        }
+                    },
+                    error: function () {
+                        alert('Error al cargar los datos de la tarea.');
+                    }
+                });
+            }
+
+            // Manejar el envío del formulario
+            $('#taskForm').on('submit', function (event) {
+                event.preventDefault(); // Evitar el comportamiento predeterminado del formulario
+
+                const formData = $(this).serialize();
+
+                $.ajax({
+                    url: '../php/save_task.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        try {
+                            const res = JSON.parse(response);
+                            if (res.status === 'success') {
+                                alert('Tarea guardada exitosamente.');
+                                window.location.href = 'dashboard.html'; // Redirigir al dashboard
+                            } else {
+                                alert('Error al guardar la tarea: ' + res.message);
+                            }
+                        } catch (error) {
+                            console.error('Error al procesar la respuesta:', error);
+                        }
+                    },
+                    error: function () {
+                        alert('Error al intentar guardar la tarea.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
